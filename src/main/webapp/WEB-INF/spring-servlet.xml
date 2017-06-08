@@ -1,0 +1,69 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	<!-- 自动扫描的包 -->
+	<context:component-scan base-package="panda.student.project.*" />
+	
+	<!-- 开启注解映射的支持 -->
+	<mvc:annotation-driven >
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<!-- 格式化 json 日期格式 -->
+				<property name="objectMapper">
+					<bean class="com.fasterxml.jackson.databind.ObjectMapper">
+						<property name="dateFormat">
+							<bean class="java.text.SimpleDateFormat">
+								<constructor-arg type="java.lang.String" value="yyyy-MM-dd HH:mm:ss"/>
+							</bean>
+						</property>
+					</bean>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+	
+	<!-- 访问静态资源 -->
+	<mvc:resources mapping="/**" location="/" />
+	
+	<!-- 配置 freemarker 解析器 -->
+	<bean id="freemarkerConfig"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<!-- 指定模板路径 -->
+		<property name="templateLoaderPath" value="/template" />
+		<property name="freemarkerSettings"> 
+			<props>
+				<prop key="defaultEncoding">UTF-8</prop> 
+				<prop key="url_escaping_charset">UTF-8</prop> 
+				<prop key="locale">zh_CN</prop> 
+				<prop key="boolean_format">true,false</prop> 
+				<prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop> 
+				<prop key="date_format">yyyy-MM-dd</prop> 
+				<prop key="time_format">HH:mm:ss</prop> 
+				<prop key="number_format">0.######</prop> 
+				<prop key="whitespace_stripping">true</prop>
+			</props>
+		</property> 
+	</bean>
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<!-- 开启缓存，当再次请求时直接拿上次的结果，开发的时候先关闭 -->
+		<property name="cache" value="false" />
+		<property name="prefix" value="" />
+		<property name="suffix" value=".ftl" />
+		<property name="contentType" value="text/html; charset=utf-8" />
+		<property name="exposeRequestAttributes" value="true" /> 
+		<property name="exposeSessionAttributes" value="true" /> 
+		<property name="exposeSpringMacroHelpers" value="true" /> 
+		<!-- 用于获取请求对象的上下文环境 -->
+		<property name="requestContextAttribute" value="request" />
+	</bean>
+</beans>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http:// mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="panda.student.project.dao.StudentDao">
+	<resultMap id="BaseMap" type="panda.student.project.meta.Student">
+		<id column="id" property="id" jdbcType="INTEGER"/>
+		<result column="no" property="no" jdbcType="INTEGER"/>
+		<result column="name" property="name" jdbcType="VARCHAR"/>
+		<result column="pwd" property="pwd" jdbcType="VARCHAR"/>
+		<result column="email" property="email" jdbcType="VARCHAR"/>
+		<result column="entranceTime" property="entranceTime" jdbcType="TIMESTAMP"/>
+		<result column="sex" property="sex" jdbcType="VARCHAR"/>
+		<result column="photo" property="photo" jdbcType="VARCHAR"/>
+		<result column="birth" property="birth" jdbcType="TIMESTAMP"/>
+		<result column="education" property="education" jdbcType="VARCHAR"/>
+		<result column="status" property="status" jdbcType="VARCHAR"/>
+	</resultMap>
+	<select id="queryStudentList" parameterType="panda.student.project.meta.BaseQo" resultMap="BaseMap">
+		select * from stu_info
+	</select>
+</mapper>
